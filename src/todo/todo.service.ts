@@ -13,12 +13,20 @@ export class TodoService {
       name: createTodoDto.name,
       description: createTodoDto.description,
     };
+
     this.todoList.push(entity);
-    return entity;
+
+    const result: CreateTodoDto = { id: entity.id, ...createTodoDto };
+    return result;
   }
 
   findAll() {
-    return this.todoList;
+    const result: CreateTodoDto[] = this.todoList.map((todo) => ({
+      id: todo.id,
+      name: todo.name,
+      description: todo.description,
+    }));
+    return result;
   }
 
   findOne(id: number) {
@@ -28,7 +36,10 @@ export class TodoService {
       throw new NotFoundException(`Todo ID: ${id} not found`);
     }
 
-    return todo;
+    const result: CreateTodoDto = {
+      ...todo,
+    };
+    return result;
   }
 
   update(id: number, updateTodoDto: UpdateTodoDto) {
@@ -46,7 +57,9 @@ export class TodoService {
     };
 
     this.todoList[todoEntityIndex] = entity;
-    return entity;
+
+    const result: CreateTodoDto = { ...entity };
+    return result;
   }
 
   remove(id: number) {
