@@ -1,7 +1,7 @@
-import { NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
+import { TodoStatus } from './entities/todo.entity';
 import { TodoController } from './todo.controller';
 import { TodoService } from './todo.service';
 
@@ -35,6 +35,7 @@ describe('TodoController', () => {
       id: 0,
       name: 'test name',
       description: 'Test desc',
+      status: TodoStatus.TODO,
     };
     const todoList = controller.create(todoDto);
     expect(todoList).toEqual(resultTodoDto);
@@ -51,6 +52,7 @@ describe('TodoController', () => {
         id: 0,
         name: 'test name',
         description: 'Test desc',
+        status: TodoStatus.TODO,
       },
     ];
 
@@ -70,6 +72,7 @@ describe('TodoController', () => {
       id: 0,
       name: 'test name',
       description: 'Test desc',
+      status: TodoStatus.TODO,
     };
 
     controller.create(todoDto);
@@ -92,6 +95,7 @@ describe('TodoController', () => {
       id: 0,
       name: 'test name 123',
       description: 'Test desc 456',
+      status: TodoStatus.TODO,
     };
 
     controller.create(createTodoDto);
@@ -114,19 +118,4 @@ describe('TodoController', () => {
 
     expect(todoList).toEqual(resultString);
   });
-
-  // it('findOne ID 0 in empty todo list should be not found', () => {
-  //   const error = controller.findOne('0');
-  //   // const error = () => {
-  //   //   throw new NotFoundException(`Todo ID: ${0} not found`);
-  //   // };
-
-  //   expect(error).toThrow(NotFoundException);
-
-  //   // {
-  //   //   "statusCode": 404,
-  //   //   "message": "Todo ID: 2 not found",
-  //   //   "error": "Not Found"
-  //   // }
-  // });
 });
