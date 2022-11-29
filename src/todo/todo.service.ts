@@ -1,7 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import * as dayjs from 'dayjs';
+
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
-import { Todo, TodoStatus } from './entities/todo.entity';
+import { Todo } from './entities/todo.entity';
+import { TodoStatus } from './enums/todo.enum';
 
 @Injectable()
 export class TodoService {
@@ -13,6 +16,10 @@ export class TodoService {
       name: createTodoDto.name,
       description: createTodoDto.description,
       status: createTodoDto.status || TodoStatus.TODO,
+      startDate: createTodoDto.startDate || undefined,
+      dueDate: createTodoDto.dueDate || undefined,
+      createdDate: dayjs().toISOString(),
+      updatedDate: dayjs().toISOString(),
     };
 
     this.todoList.push(entity);
@@ -23,10 +30,7 @@ export class TodoService {
 
   findAll() {
     const result: CreateTodoDto[] = this.todoList.map((todo) => ({
-      id: todo.id,
-      name: todo.name,
-      description: todo.description,
-      status: todo.status,
+      ...todo,
     }));
     return result;
   }
@@ -52,11 +56,13 @@ export class TodoService {
     }
 
     const entity: Todo = {
-      id: this.todoList[todoEntityIndex].id,
+      ...this.todoList[todoEntityIndex],
       name: updateTodoDto.name || this.todoList[todoEntityIndex].name,
-      description:
-        updateTodoDto.description || this.todoList[todoEntityIndex].description,
+      description: updateTodoDto.description || this.todoList[todoEntityIndex].description,
       status: updateTodoDto.status || this.todoList[todoEntityIndex].status,
+      startDate: updateTodoDto.startDate || this.todoList[todoEntityIndex].startDate,
+      dueDate: updateTodoDto.dueDate || this.todoList[todoEntityIndex].dueDate,
+      updatedDate: dayjs().toISOString(),
     };
 
     this.todoList[todoEntityIndex] = entity;

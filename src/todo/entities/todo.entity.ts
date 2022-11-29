@@ -1,12 +1,13 @@
+import { TodoStatus } from '../enums/todo.enum';
+
 export class Todo {
   id: number;
   name: string;
   description: string;
   status: TodoStatus;
-}
-
-export enum TodoStatus {
-  TODO = 'TODO',
-  DOING = 'DOING',
-  DONE = 'DONE',
+  startDate?: string;
+  dueDate?: string;
+  createdDate: string;
+  updatedDate: string;
+  deletedDate?: string;
 }
